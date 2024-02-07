@@ -156,7 +156,7 @@ const char *http_request_headers(int fd)
         }
 
         /* Decode URL escape sequences in the value */
-        url_decode(value, sp);
+       	url_decode(value, sp);
 
         /* Store header in env. variable for application code */
         /* Some special headers don't use the HTTP_ prefix. */
@@ -440,7 +440,10 @@ void http_serve_executable(int fd, const char *pn)
 
 void url_decode(char *dst, const char *src)
 {
-    for (;;)
+    int chars_read = 0;
+    int max_len = 512;
+
+    while (chars_read <= max_len)
     {
         if (src[0] == '%' && src[1] && src[2])
         {
@@ -451,16 +454,19 @@ void url_decode(char *dst, const char *src)
 
             *dst = strtol(&hexbuf[0], 0, 16);
             src += 3;
+	    chars_read += 3;
         }
         else if (src[0] == '+')
         {
             *dst = ' ';
             src++;
+	    chars_read++;
         }
         else
         {
             *dst = *src;
             src++;
+	    chars_read++;
 
             if (*dst == '\0')
                 break;
