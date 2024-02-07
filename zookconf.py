@@ -115,7 +115,7 @@ class Container():
         if not self.c.create("download", 0,
                         { "dist": "debian",
                           "release": "stretch",
-                          "arch": "amd64" }):
+                          "arch": "amd64"  }):
             self.errormsg("Could not download initial container image")
             sys.exit(1)
 

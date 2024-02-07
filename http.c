@@ -33,9 +33,9 @@ int http_read_line(int fd, char *buf, size_t size)
 
     for (;;)
     {
-        int cc = read(fd, &buf[i], 1);
-        if (cc <= 0)
-            break;
+	int cc = read(fd, &buf[i], 1);
+	if (cc <= 0)
+		break;
 
         if (buf[i] == '\r')
         {
@@ -54,8 +54,7 @@ int http_read_line(int fd, char *buf, size_t size)
             buf[i] = '\0';
             return 0;
         }
-
-        i++;
+	i++;
     }
 
     return -1;
@@ -156,7 +155,7 @@ const char *http_request_headers(int fd)
         }
 
         /* Decode URL escape sequences in the value */
-        url_decode(value, sp);
+       	url_decode(value, sp);
 
         /* Store header in env. variable for application code */
         /* Some special headers don't use the HTTP_ prefix. */
