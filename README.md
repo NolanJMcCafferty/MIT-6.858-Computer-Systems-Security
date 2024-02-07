@@ -11,7 +11,7 @@ Use the following commands to run the test suite:
 
 ```$xslt
 $ git clone https://github.com/NolanJMcCafferty/MIT-6.858-Computer-Systems-Security.git
-$ git checkout -b lab1
+$ git checkout lab1
 $ make check
 $ make check-fixed
 ```
