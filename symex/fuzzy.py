@@ -181,8 +181,13 @@ class sym_minus(sym_binop):
   def _z3expr(self, printable):
     return z3expr(self.a, printable) - z3expr(self.b, printable)
 
-## Exercise 2: your code here.
-## Implement AST nodes for division and multiplication.
+class sym_multiply(sym_binop):
+    def _z3expr(self, printable):
+        return z3expr(self.a, printable) * z3expr(self.b, printable)
+
+class sym_divide(sym_binop):
+    def _z3expr(self, printable):
+        return z3expr(self.b, printable) / z3expr(self.a, printable)
 
 ## String operations
 
@@ -489,8 +494,27 @@ class concolic_int(int):
     res = o - self.__v
     return concolic_int(sym_minus(ast(o), ast(self)), res)
 
-  ## Exercise 2: your code here.
-  ## Implement symbolic division and multiplication.
+  def __mul__(self, o):
+    if isinstance(o, concolic_int):
+        res = self.__v * o.__v
+    else:
+      res = self.__v * o
+    return concolic_int(sym_multiply(ast(o), ast(self)), res)
+
+  def __rmul__(self, o):
+      res = o * self.__v
+      return concolic_int(sym_multiply(ast(o), ast(self)), res)
+  
+  def __floordiv__(self, o):
+      if isinstance(o, concolic_int):
+          res = self.__v // o.__v
+      else:
+          res = self.__v // o
+      return concolic_int(sym_divide(ast(o), ast(self)), res)
+
+  def __rfloordiv__(self, o):
+      res = o // self.__v
+      return concolic_int(sym_divide(ast(o), ast(self)), res)
 
   def _sym_ast(self):
     return self.__sym
@@ -535,6 +559,14 @@ class concolic_str(str):
   ## Implement symbolic versions of string length (override __len__)
   ## and contains (override __contains__).
 
+  def __len__(self):
+    res = len(self.__v)
+    return concolic_int(sym_length(ast(self)), res)
+
+  def __contains__(self, o):
+    res = o in self.__v
+    return concolic_bool(sym_contains(ast(self), ast(o)), res)
+    
   def startswith(self, o):
     res = self.__v.startswith(o)
     return concolic_bool(sym_startswith(ast(self), ast(o)), res)
@@ -912,8 +944,15 @@ def concolic_force_branch(b, branch_conds, branch_callers, verbose = 1):
   ## arguments. In Python, to unpack a list into separate positional
   ## arguments, use the '*' operator documented at
   ## https://docs.python.org/3/tutorial/controlflow.html#unpacking-argument-lists
+  constraint = const_bool(True)
 
-  constraint = None
+  for i, condition in enumerate(branch_conds):
+    if i == b:
+      new_cond = sym_not(condition)
+    else:
+      new_cond = condition
+    
+    constraint = sym_and(constraint, new_cond)
 
   if verbose > 2:
     callers = branch_callers[b]
@@ -932,14 +971,18 @@ def concolic_force_branch(b, branch_conds, branch_callers, verbose = 1):
 # applications and in our constraints; we filter those by accepting
 # only variables names that appear in ok_names.
 def concolic_find_input(constraint, ok_names, verbose=0):
-  ## Invoke Z3, along the lines of:
-  ##
-  ##     (ok, model) = fork_and_check(constr)
-  ##
-  ## If Z3 was able to find example inputs that solve this
-  ## constraint (i.e., ok == z3.sat), make a new input set
-  ## containing the values from Z3's model, and return it.
-  return False, ConcreteValues()
+  (ok, model) = fork_and_check(constraint)
+  
+  if ok == z3.sat:
+    values = ConcreteValues()
+
+    for key, value in model.items():
+        if key in ok_names:
+            values.add(key, value)
+
+    return True, values
+  else:
+    return False, ConcreteValues()
 
 # Concolic execute func for many different paths and return all
 # computed results for those different paths.
@@ -961,6 +1004,20 @@ def concolic_execs(func, maxiter = 100, verbose = 0):
     (r, branch_conds, branch_callers) = concolic_exec_input(func, concrete_values, verbose)
     if r not in outs:
       outs.append(r)
+
+    for i, branch_cond in enumerate(branch_conds):
+      constraint = concolic_force_branch(i, branch_conds, branch_callers)
+
+      if constraint not in checked:
+          checked.add(constraint)
+          
+          (ok, new_values) = concolic_find_input(constraint, concrete_values.var_names())
+
+          if ok:
+              new_values.inherit(concrete_values)
+              inputs.add(new_values, branch_callers[i])
+
+
 
     ## Exercise 6: your code here.
     ##
