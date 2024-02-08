@@ -4,6 +4,8 @@ from debug import *
 import auth_client
 import time
 
+INITIAL_ZOOBARS = 10
+
 def transfer(sender, sender_token, recipient, zoobars, is_profile):
     persondb = person_setup()
     senderp = persondb.query(Person).get(sender)
@@ -41,7 +43,7 @@ def initialize(username):
     db = bank_setup()
     newbank = Bank()
     newbank.username = username
-    newbank.zoobars = 10
+    newbank.zoobars = INITIAL_ZOOBARS
     db.add(newbank)
     db.commit()
 
