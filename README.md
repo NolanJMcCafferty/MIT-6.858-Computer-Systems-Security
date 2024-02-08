@@ -9,7 +9,7 @@ For this lab I modified many service files in the `zoobar/` directory, along wit
 Use the following commands to run the test suite:
 
 ```$xslt
-$ git clone https://github.com/NolanJMcCafferty/MIT-6.5840-Distribute-Systems
+$ git clone https://github.com/NolanJMcCafferty/MIT-6.858-Computer-Systems-Security
 $ cd MIT-6.858-Computer-Systems-Security
 $ git checkout lab2
 $ make check
