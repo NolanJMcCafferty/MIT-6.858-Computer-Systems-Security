@@ -18,6 +18,7 @@ $ make check
 Test Results: 
  
 (output lines with `[ ???? ]` indicate that the result must be checked manually by the course grader)
+
 (all automatic tests passed, except for the challenge which has not been attempted yet)
 
 ```$xslt
