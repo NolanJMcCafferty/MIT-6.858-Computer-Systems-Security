@@ -4,7 +4,7 @@ This is the third lab from the MIT 6.858 Computer Systems Security class which i
 
 [Lab 3 Instructions](https://css.csail.mit.edu/6.858/2020/labs/lab3.html)
 
-For this lab I modified `int-avg.py`, `symex/fuzzy.py`, `symex/symsql.py`, and `symex_exercises.py` to complete exercises 1-8. 
+For this lab I modified `int-avg.py`, `symex/fuzzy.py`, `symex/symsql.py`, `symex_exercises.py`, `check-symex-zoobar.py`, and `zoobar-fixed/transfer.py`. 
 
 Use the following commands to run the test suite:
 
@@ -15,13 +15,13 @@ $ git checkout lab3
 $ make check
 ```
 
-Test Results (passed exercises 1-8, have not attempted challenge 1 yet):
+Test Results: 
 
 ```$xslt
 student@6858-v20:~/lab$ make check
 ./check_lab3.py
 PASS Exercise 1: unsigned average
-FAIL Challenge 1: signed average
+PASS Challenge 1: signed average
 PASS Exercise 2: concolic multiply
 PASS Exercise 2: concolic divide
 PASS Exercise 2: concolic divide+multiply+add
@@ -35,4 +35,10 @@ PASS Exercise 7: concolic contains
 PASS Exercise 7: concolic execution for strings
 PASS Exercise 8: concolic database lookup (str)
 PASS Exercise 8: concolic database lookup (int)
+PASS Exercise 9: eval injection found
+PASS Exercise 9: balance mismatch found
+PASS Exercise 9: zoobar theft found
+PASS Exercise 10: eval injection not found
+PASS Exercise 10: balance mismatch not found
+PASS Exercise 10: zoobar theft not found
 ```

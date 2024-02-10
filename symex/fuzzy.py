@@ -992,7 +992,7 @@ def concolic_execs(func, maxiter = 100, verbose = 0):
   checked = set()
 
   ## output values
-  outs = []
+  outs = set()
 
   ## list of inputs we should try to explore.
   inputs = InputQueue()
@@ -1000,22 +1000,22 @@ def concolic_execs(func, maxiter = 100, verbose = 0):
   iter = 0
   while iter < maxiter and not inputs.empty():
     iter += 1
+
     concrete_values = inputs.get()
     (r, branch_conds, branch_callers) = concolic_exec_input(func, concrete_values, verbose)
-    if r not in outs:
-      outs.append(r)
+    outs.add(r)
 
     for i, branch_cond in enumerate(branch_conds):
       constraint = concolic_force_branch(i, branch_conds, branch_callers)
 
-      if constraint not in checked:
-          checked.add(constraint)
-          
-          (ok, new_values) = concolic_find_input(constraint, concrete_values.var_names())
+      if constraint in checked:
+          continue
+      checked.add(constraint)
+      (ok, new_values) = concolic_find_input(constraint, concrete_values.var_names())
 
-          if ok:
-              new_values.inherit(concrete_values)
-              inputs.add(new_values, branch_callers[i])
+      if ok:
+          new_values.inherit(concrete_values)
+          inputs.add(new_values, branch_callers[i])
 
 
 
